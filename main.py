@@ -54,7 +54,7 @@ TOKENS = [
 ]
 
 CHAT_ID = 7623391678
-OWNER_ID = 7623391678
+OWNER_ID = [7623391678 ,8399044122]
 SUDO_FILE = "7623391678"
 STICKER_FILE = "stickers.json"
 VOICE_CLONES_FILE = "voice_clones.json"
@@ -216,9 +216,9 @@ if os.path.exists(SUDO_FILE):
             _loaded = json.load(f)
             SUDO_USERS = set(int(x) for x in _loaded)
     except Exception:
-        SUDO_USERS = {OWNER_ID}
+        SUDO_USERS = set(OWNER_ID)
 else:
-    SUDO_USERS = {OWNER_ID}
+    SUDO_USERS = set(OWNER_ID)
 
 # Initialize data files
 if os.path.exists(STICKER_FILE):
@@ -316,7 +316,7 @@ def only_sudo(func):
 def only_owner(func):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         uid = update.effective_user.id
-        if uid != OWNER_ID:
+        if uid not in OWNER_ID:
             await update.message.reply_text("🤬 YE KRNE SE PEHLE DELETE~♤ KO PAPA BOLDE🤬.")
             return
         return await func(update, context)
